@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">AnimeCorn</string>
+    <string name="title_activity_main">AnimeCorn</string>
+    <string name="package_name">com.chuck.animecorn</string>
+    <string name="custom_url_scheme">com.chuck.animecorn</string>
+</resources>

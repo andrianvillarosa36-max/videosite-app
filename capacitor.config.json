@@ -1,0 +1,9 @@
+{
+  "appId": "com.chuck.animecorn",
+  "appName": "AnimeCorn",
+  "webDir": "www",
+  "server": {
+    "url": "https://videosite-v2.onrender.com",
+    "cleartext": false
+  }
+}
