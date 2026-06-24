@@ -5,6 +5,7 @@
   "backgroundColor": "#0D1117",
   "server": {
     "url": "https://videosite-v2.onrender.com",
-    "cleartext": false
+    "cleartext": false,
+    "errorPath": "offline.html"
   }
 }
