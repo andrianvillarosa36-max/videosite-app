@@ -1,6 +1,8 @@
 package com.chuck.animecorn;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
@@ -11,8 +13,6 @@ public class MainActivity extends BridgeActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Inject native bridge after WebView is ready
         getBridge().getWebView().addJavascriptInterface(new NativeBridge(), "NativeBridge");
     }
 
@@ -20,30 +20,30 @@ public class MainActivity extends BridgeActivity {
 
         @JavascriptInterface
         public void lockLandscape() {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                }
-            });
+            runOnUiThread(() -> setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE));
         }
 
         @JavascriptInterface
         public void unlockOrientation() {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
-                }
-            });
+            runOnUiThread(() -> setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED));
         }
 
         @JavascriptInterface
         public void lockPortrait() {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            runOnUiThread(() -> setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT));
+        }
+
+        @JavascriptInterface
+        public void openVideoInNativePlayer(String url, String title) {
+            runOnUiThread(() -> {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setDataAndType(Uri.parse(url), "video/*");
+                intent.putExtra("title", title);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                try {
+                    getApplicationContext().startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             });
         }
