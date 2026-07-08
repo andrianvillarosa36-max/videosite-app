@@ -15,6 +15,8 @@ import com.getcapacitor.BridgeActivity;
 public class MainActivity extends BridgeActivity {
 
     private volatile float topInsetDp = 0f;
+    private volatile float leftInsetDp = 0f;
+    private volatile float rightInsetDp = 0f;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -24,7 +26,11 @@ public class MainActivity extends BridgeActivity {
 
         ViewCompat.setOnApplyWindowInsetsListener(getWindow().getDecorView(), (view, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            topInsetDp = systemBars.top / getResources().getDisplayMetrics().density;
+            Insets cutout = insets.getInsets(WindowInsetsCompat.Type.displayCutout());
+            float density = getResources().getDisplayMetrics().density;
+            topInsetDp = Math.max(systemBars.top, cutout.top) / density;
+            leftInsetDp = Math.max(systemBars.left, cutout.left) / density;
+            rightInsetDp = Math.max(systemBars.right, cutout.right) / density;
             return insets;
         });
 
@@ -51,6 +57,16 @@ public class MainActivity extends BridgeActivity {
         @JavascriptInterface
         public float getTopInset() {
             return topInsetDp;
+        }
+
+        @JavascriptInterface
+        public float getLeftInset() {
+            return leftInsetDp;
+        }
+
+        @JavascriptInterface
+        public float getRightInset() {
+            return rightInsetDp;
         }
 
         @JavascriptInterface
